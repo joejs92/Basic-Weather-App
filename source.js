@@ -1,6 +1,8 @@
 const tempF = [[]];
 const tempC = [[]];
 
+let currentTemp = false;
+
 function getWeather(){
     const location = document.getElementById('search').value;
     return new Promise(function(resolve){
@@ -37,14 +39,38 @@ function deleteWeatherInfo() {
 }
 
 function addElements() {
-    const element = document.getElementById('weatherBox');
-    const city = document.createElement('h3');
-    city.textContent = tempF[0][0];
-    element.appendChild(city);
+    if(currentTemp == false){
+        const element = document.getElementById('weatherBox');
+        const city = document.createElement('h3');
+        city.textContent = tempF[0][0];
+        element.appendChild(city);
 
-    const temp = document.createElement('p');
-    temp.textContent = `Current temperature: ${tempF[0][1]} / ${tempC[0][1]}.`;
-    element.appendChild(temp);
+        const temp = document.createElement('p');
+        temp.textContent = `Current temperature: ${tempF[0][1]}.`;
+        element.appendChild(temp);
+
+        const tempButton = document.createElement('button');
+        tempButton.innerText = 'Celsius';
+        element.appendChild(tempButton);
+
+        currentTemp = true;
+    }
+    else {
+        const element = document.getElementById('weatherBox');
+        const city = document.createElement('h3');
+        city.textContent = tempC[0][0];
+        element.appendChild(city);
+
+        const temp = document.createElement('p');
+        temp.textContent = `Current temperature: ${tempC[0][1]}.`;
+        element.appendChild(temp);
+
+        const tempButton = document.createElement('button');
+        tempButton.innerText = 'Farenheit';
+        element.appendChild(tempButton);
+
+        currentTemp = false;
+    }
 }
 
 makeWeatherBox();
@@ -56,20 +82,36 @@ div.addEventListener('click', event => {
         if(target.innerText == 'Search'){
             // See https://www.youtube.com/watch?v=TnhCX0KkPqs
             //for more info on how promises work.
+            currentTemp = false;
             deleteDomElement();
             deleteWeatherInfo();
             getWeather()
                 .then(makeWeatherBox)
                 .then(addElements)
-        };
+        }
+        else if(target.innerText == 'Celsius'){
+            deleteDomElement();
+            makeWeatherBox();
+            addElements()
+        }
+        else if(target.innerText == 'Farenheit'){
+            deleteDomElement();
+            makeWeatherBox();
+            addElements()
+        }
     };
 });
 
 /*
-Next steps. 
-1. Add a unique ID to the search button.
-2. Modify addElements to display only F as default.
-3. Modify the addElements function to add a button that
-converts to C when F is displayed, and to F when C is 
-displayed.
+This is the project in its most basic form. All it does is
+get the weather from the API, displays the name of the
+city and its current temperature, and allows the toggling
+between Celsius and Farenheit. The most important part of
+the project is to get the information from the API and 
+display it. That was done here. Anything else would be 
+just sugar on top. In the future the code should be 
+refactored to better reflect a good CRUM framework, and
+add additional features. Lucky for me, anything else that
+may be added can just be added to the end of one of the 
+functions. I consider this project finished for now.
 */
