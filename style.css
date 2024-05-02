@@ -1,0 +1,9 @@
+#bottom {
+    width: 540px;
+    height: 200px;
+    padding: 4px;
+    margin: 8px;
+    border-width: 1px;
+    border-style: solid;
+    border-color:black;
+}
